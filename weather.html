@@ -1,0 +1,81 @@
+<!Doctype html>
+<html>
+
+<head>
+    <style>
+        div {
+            text-align: center;
+            padding: 5%;
+        }
+
+        h2 {
+            color: brown;
+        }
+
+        #citytxt {
+            height: 50px;
+            width: 35%;
+            margin: auto;
+            background-color: lightsalmon;
+
+        }
+
+        #b1 {
+            height: 60px;
+            width: 100px;
+            background-color: brown;
+            margin-top: 10px;
+        }
+        #txtA {
+            height: 200px;
+            width: 35%;
+            margin: auto 30%;
+            border: 1px solid black;
+            background-color:pink; 
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="wea">
+        <h2>Weather Forecast </h2>
+        <input type="text" id="citytxt" placeholder="Weather here.."><br>
+        <button type="button" id="b1" onclick="weatherfc()"><b>WEATHER</b></button><br><br>
+        <div id="txtA" ></div>
+
+    </div>
+
+
+    <script>
+        var request = new XMLHttpRequest();
+        function weatherfc() {
+            request.onreadystatechange = function () {
+               
+                if (this.readyState == 4 && this.status == 200) {
+                    // console.log('test');
+                    // console.log("Before parsing ==>"+this.responseText);
+                    // console.log("=========================================")
+                    var content = JSON.parse(this.responseText);
+                   // console.log(content);
+                    var weatherReport=Object.keys("content.main");
+                    console.log("main me.."+weatherReport);
+                    console.log("This is Temp inside main"+ content.weather[0].description);
+                    console.log(content.main.temp);
+                   document.getElementById("txtA").innerHTML+="<br> Temperature "+content.main.temp + " <br> Pressure "+content.main.pressure + "<br> Humidity "+content.main.humidity;   
+                //    document.getElementsByName("ta").innerHTML+="Pressure"+content.main.pressure;   
+                //    document.getElementById("ta").innerText="Humidity"+content.main.humidity;          
+		 }
+    
+            };
+            var city = document.getElementById("citytxt").value;
+            request.open("GET", "http://api.openweathermap.org/data/2.5/weather?q="+city+"&APPID=d1899c8f9190edbc1d42ba8f24a5b993", true); //?search=
+            request.send();
+    
+        }
+    
+    
+    </script>
+</body>
+
+</html>
